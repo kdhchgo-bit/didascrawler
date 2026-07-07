@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DIDAS 자동 업로드</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-mark">DIDAS</div>
+          <div>
+            <h1>오늘 작업 파일 자동 업로드</h1>
+            <p id="statusText">대기 중</p>
+          </div>
+        </div>
+        <div class="actions">
+          <button id="refreshBtn" type="button" class="icon-button" title="새로고침" aria-label="새로고침">↻</button>
+          <button id="saveBtn" type="button">설정 저장</button>
+          <button id="planBtn" type="button">계획 보기</button>
+          <button id="uploadBtn" type="button" class="primary">실제 업로드</button>
+          <button id="stopBtn" type="button" class="danger" disabled>중지</button>
+        </div>
+      </header>
+
+      <nav class="tabs" aria-label="작업 모드">
+        <button class="tab active" type="button" data-view="upload">자동 업로드</button>
+        <button class="tab" type="button" data-view="search">검색/다운로드</button>
+      </nav>
+
+      <main class="layout">
+        <section class="panel controls-panel" data-panel="upload">
+          <div class="panel-head">
+            <h2>업로드 설정</h2>
+            <span>프로젝트와 공정은 파일명/폴더명으로 자동 추천</span>
+          </div>
+          <div class="panel-body">
+            <div class="field-grid">
+              <label>
+                <span>ID</span>
+                <input id="userId" autocomplete="username" />
+              </label>
+              <label>
+                <span>비밀번호</span>
+                <input id="password" type="password" autocomplete="current-password" placeholder="비밀번호 입력" />
+              </label>
+              <label class="wide-field">
+                <span>오늘 작업 폴더</span>
+                <input id="workDir" placeholder="예: D:\Projects\오늘작업" />
+              </label>
+              <label>
+                <span>스캔 기준</span>
+                <select id="since">
+                  <option value="today">오늘 00:00 이후</option>
+                  <option value="8">최근 8시간</option>
+                  <option value="24">최근 24시간</option>
+                  <option value="72">최근 3일</option>
+                </select>
+              </label>
+              <label>
+                <span>최대 파일 수</span>
+                <input id="uploadLimit" type="number" min="1" max="300" />
+              </label>
+              <label>
+                <span>프로젝트 힌트</span>
+                <input id="projectHint" placeholder="예: 발안일반산업단지" />
+              </label>
+              <label>
+                <span>공정 힌트</span>
+                <input id="processHint" placeholder="예: 자문 및 심의" />
+              </label>
+              <label>
+                <span>카테고리 힌트</span>
+                <input id="categoryHint" placeholder="예: 성과품 작성" />
+              </label>
+              <label>
+                <span>Chrome 경로</span>
+                <input id="chromePath" />
+              </label>
+            </div>
+
+            <div class="toggle-row">
+              <label class="toggle">
+                <input id="headed" type="checkbox" />
+                <span>브라우저 보기</span>
+              </label>
+              <label class="toggle">
+                <input id="dryRun" type="checkbox" checked />
+                <span>실제 업로드 전 계획만 만들기</span>
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel log-panel">
+          <div class="panel-head">
+            <h2>실행 로그</h2>
+            <span id="pidText"></span>
+          </div>
+          <pre id="logBox"></pre>
+        </section>
+
+        <section class="panel upload-panel" data-panel="upload">
+          <div class="panel-head results-head">
+            <h2>업로드 계획/결과</h2>
+            <div class="result-tools">
+              <input id="uploadFilter" class="result-filter" type="search" placeholder="파일, 프로젝트, 카테고리 검색" autocomplete="off" />
+              <span id="uploadSummary">0개</span>
+            </div>
+          </div>
+          <div id="uploadCards" class="summary-cards"></div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>파일</th>
+                  <th>프로젝트</th>
+                  <th>카테고리</th>
+                  <th>신뢰도</th>
+                  <th>상태</th>
+                </tr>
+              </thead>
+              <tbody id="uploadBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel controls-panel hidden" data-panel="search">
+          <div class="panel-head">
+            <h2>검색/다운로드 설정</h2>
+            <span>기존 DIDAS 검색 기능</span>
+          </div>
+          <div class="panel-body">
+            <div class="field-grid">
+              <label>
+                <span>검색어</span>
+                <input id="query" />
+              </label>
+              <label>
+                <span>검색 페이지</span>
+                <input id="maxPages" type="number" min="1" max="20" />
+              </label>
+              <label>
+                <span>다운로드 개수</span>
+                <input id="downloadLimit" type="number" min="1" max="200" />
+              </label>
+              <label>
+                <span>발주처</span>
+                <input id="orderOfficeName" />
+              </label>
+              <label>
+                <span>담당부서</span>
+                <input id="departmentName" />
+              </label>
+              <label>
+                <span>참여자</span>
+                <input id="participant" />
+              </label>
+            </div>
+            <div class="toggle-row">
+              <label class="toggle">
+                <input id="download" type="checkbox" checked />
+                <span>파일 다운로드</span>
+              </label>
+              <label class="toggle">
+                <input id="copyToCabinet" type="checkbox" />
+                <span>내 캐비닛 복사</span>
+              </label>
+              <label class="toggle">
+                <input id="clearOutputs" type="checkbox" />
+                <span>출력 폴더 비우기</span>
+              </label>
+            </div>
+            <div class="inline-actions">
+              <button id="startBtn" type="button" class="secondary">검색 실행</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel results-panel hidden" data-panel="search">
+          <div class="panel-head results-head">
+            <h2>검색 결과</h2>
+            <div class="result-tools">
+              <input id="resultFilter" class="result-filter" type="search" placeholder="결과 검색" autocomplete="off" />
+              <span id="resultSummary">0건</span>
+            </div>
+          </div>
+          <div id="resultTabs" class="result-tabs" role="tablist" aria-label="문서 종류"></div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th><button type="button" class="sort-head" data-sort="title">파일명</button></th>
+                  <th><button type="button" class="sort-head" data-sort="extension">확장자</button></th>
+                  <th><button type="button" class="sort-head" data-sort="projectCode">프로젝트</button></th>
+                  <th><button type="button" class="sort-head" data-sort="registeredAt">등록일</button></th>
+                  <th><button type="button" class="sort-head" data-sort="registeredBy">등록자</button></th>
+                  <th><button type="button" class="sort-head" data-sort="downloaded">받기</button></th>
+                </tr>
+              </thead>
+              <tbody id="resultsBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel files-panel hidden" data-panel="search">
+          <div class="panel-head">
+            <h2>다운로드 파일</h2>
+            <span id="fileSummary">0개</span>
+          </div>
+          <div id="fileList" class="file-list"></div>
+        </section>
+      </main>
+    </div>
+    <script src="/app.js"></script>
+  </body>
+</html>

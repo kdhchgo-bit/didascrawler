@@ -1,0 +1,11 @@
+config.local.json
+node_modules/
+dist/
+outputs/
+session/
+logs/
+worker_scratch/
+*.log
+*.zip
+.env
+.env.*

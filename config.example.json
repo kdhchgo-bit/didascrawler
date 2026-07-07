@@ -1,0 +1,29 @@
+{
+  "credentials": {
+    "id": "",
+    "password": ""
+  },
+  "search": {
+    "query": "자료",
+    "maxPages": 5,
+    "filters": {
+      "orderOfficeName": "",
+      "departmentName": "",
+      "participant": ""
+    }
+  },
+  "browser": {
+    "headless": false,
+    "executablePath": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+  },
+  "autoUpload": {
+    "workDir": "",
+    "since": "today",
+    "limit": 50,
+    "projectHint": "",
+    "processHint": "",
+    "categoryHint": "",
+    "dryRun": true
+  },
+  "outputDir": "outputs"
+}

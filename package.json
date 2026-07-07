@@ -1,0 +1,26 @@
+{
+  "name": "dohwa-platform-crawler",
+  "version": "0.1.0",
+  "private": true,
+  "main": "desktop-main.js",
+  "type": "commonjs",
+  "scripts": {
+    "test": "node --test",
+    "probe": "node crawler.js --probe",
+    "search": "node crawler.js",
+    "download": "node crawler.js --download --download-limit 12",
+    "cabinet-download": "node crawler.js --copy-to-cabinet --download --download-limit 12",
+    "gui": "electron .",
+    "server": "node gui-server.js",
+    "server:open": "node gui-server.js --open",
+    "desktop": "electron .",
+    "build:win": "electron-packager . DohwaCrawler --platform=win32 --arch=x64 --out=dist --overwrite --prune=true --asar=false --ignore=\"(^|/)dist($|/)\" --ignore=\"(^|/)outputs($|/)\" --ignore=\"(^|/)session($|/)\" --ignore=\"(^|/)logs($|/)\" --ignore=\"(^|/)worker_scratch($|/)\" --ignore=\"(^|/)test($|/)\" --ignore=\"(^|/)config\\\\.json$\" --ignore=\".*\\\\.zip$\" --ignore=\".*\\\\.log$\" && node scripts/clean-package.js"
+  },
+  "dependencies": {
+    "playwright-core": "^1.59.1"
+  },
+  "devDependencies": {
+    "@electron/packager": "^20.0.0",
+    "electron": "^38.5.0"
+  }
+}

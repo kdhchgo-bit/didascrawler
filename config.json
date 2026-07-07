@@ -1,0 +1,20 @@
+{
+  "credentials": {
+    "id": "",
+    "password": ""
+  },
+  "search": {
+    "query": "기술심의신청서",
+    "maxPages": 5
+  },
+  "browser": {
+    "headless": true,
+    "executablePath": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+  },
+  "outputDir": "outputs",
+  "download": {
+    "enabled": true,
+    "limit": 12,
+    "copyToCabinet": false
+  }
+}
